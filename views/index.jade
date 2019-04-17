@@ -3,6 +3,11 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  form(action="/prueba", method="post")
-    input(type="text", id="txtPrueba")
-    input(type="submit", value="Prueba", id="btnPrueba")
+  form(action="/login", method="post")
+    input(type="text", id="txtUsuario")
+    br
+    input(type="password", id="txtPassword", placeholder='******')
+    br
+    input(type="submit", value="Login", id="btnLogin")
+
+    
