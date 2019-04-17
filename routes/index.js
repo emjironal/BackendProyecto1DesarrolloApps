@@ -26,7 +26,7 @@ router.post('/prueba', function(req, res, next)
 {
   res.render('index', {title: 'Prueba sirve'});
   client.connect();
-  client.query('SELECT NOW()', (err, res) => {
+  client.query('SELECT * from provincia', (err, res) => {
     console.log(err, res);
     client.end();
   });
