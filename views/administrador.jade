@@ -3,30 +3,46 @@ extends layout
 block content
     h1 Administrador
     h2 Manejo restaurantes
-    div
-     table(style="width:100%")
-      thead
-        tr
-          th IdRestaurant
-          th Restaurant
-          th LatitudePos
-          th LongitudePos
-          th Score
-          th FoodType
-          th Open
-          th Close
-          th Price
-          th Distrito
-      tbody
-        each restaurant in restaurants
+    div(style="overflow-y: scroll; height:200px;")
+        table(style="width:100%")
+            thead
             tr
-                td #{restaurant.idrestaurant}
-                td #{restaurant.name}
-                td #{restaurant.latitudepos}
-                td #{restaurant.longitudepos}
-                td null
-                td #{restaurant.foodtype}
-                td #{restaurant.open}
-                td #{restaurant.close}
-                td #{restaurant.price}
-                td null
+                th IdRestaurant
+                th Restaurant
+                th LatitudePos
+                th LongitudePos
+                th Score
+                th FoodType
+                th Open
+                th Close
+                th Price
+                th Distrito
+            tbody
+            each restaurant in restaurants
+                tr
+                    td #{restaurant.idrestaurant}
+                    td #{restaurant.name}
+                    td #{restaurant.latitudepos}
+                    td #{restaurant.longitudepos}
+                    td null
+                    td #{restaurant.foodtype}
+                    td #{restaurant.open}
+                    td #{restaurant.close}
+                    td #{restaurant.price}
+                    td null
+    h2 Vista usuarios
+    div(style="overflow-y: scroll; height:200px;")
+        table(style="width:100%")
+            thead
+            tr
+                th IdUser
+                th Username
+                th Password
+                th Type
+            tbody
+            each user in users
+                tr
+                    td #{user.iduser}
+                    td #{user.username}
+                    td #{user.password}
+                    td #{user.type}
