@@ -6,12 +6,19 @@ var db = require('./basedatos').db;
 router.get('/', function(req, res, next)
 {
   db.any("select * from Restaurant")
-    .then(result=>{
-        console.log("Result: ", result);
-        res.render('administrador', {restaurants: result});
+    .then(restaurantes=>{
+        db.any("select * from Usertable")
+            .then(usuarios=>{
+                res.render('administrador', {restaurants: restaurantes, users: usuarios});
+            })
+            .catch(err=>{
+                console.log("Error: ", err);
+                res.render('administrador', {restaurants: restaurantes});
+            });
     })
     .catch(err=>{
         console.log("Error: ", err);
+        res.render('administrador');
     });
 
 });
