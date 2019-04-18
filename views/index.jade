@@ -4,9 +4,9 @@ block content
   h1= title
   p Welcome to #{title}
   form(action="/login", method="post")
-    input(type="text", id="txtUsuario")
+    input(type="text", id="txtUsuario", name="txtUsuario", placeholder="Username")
     br
-    input(type="password", id="txtPassword", placeholder='******')
+    input(type="password", id="txtPassword", name="txtPassword", placeholder="Password")
     br
     input(type="submit", value="Login", id="btnLogin")
 
