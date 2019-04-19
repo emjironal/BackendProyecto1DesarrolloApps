@@ -10,14 +10,14 @@ block content
                 tr
                     th Id
                     th Restaurant
-                    th LatitudePos
-                    th LongitudePos
+                    th Latitude pos
+                    th Longitude pos
                     th Score
-                    th FoodType
+                    th Food type
                     th Open
                     th Close
                     th Price
-                    th Distrito
+                    th Código distrito
                 tbody
                 each restaurant, index in restaurants
                     tr
@@ -31,7 +31,7 @@ block content
                         td
                             div
                                 input(type="text", name="longitudepos", value="#{restaurant.longitudepos}", size="10px")
-                        td null
+                        td #{restaurant.realscore ? restaurant.realscore : 'null'}
                         td
                             div
                                 input(type="text", name="foodtype", value="#{restaurant.foodtype}", size="10px")
@@ -46,7 +46,7 @@ block content
                                 input(type="text", name="price", value="#{restaurant.price}", size="10px")
                         td
                             div
-                                input(type="text", name="distrito", value="null", size="10px")
+                                input(type="text", name="distrito", value="#{restaurant.codigodistrito}", size="10px")
                         td
                             div
                                 input(type="submit", formaction="/administrador/modificar/#{index}/#{restaurant.idrestaurant}", value="M")

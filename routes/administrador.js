@@ -5,7 +5,9 @@ var db = require('./basedatos').db;
 /* GET home page. */
 router.get('/', function(req, res, next)
 {
-  db.query("select * from Restaurant order by idrestaurant")
+  db.query("select * from Restaurant r " +
+    "inner join Score s on (r.idrestaurant = s.idrestaurant) " +
+    "order by r.idrestaurant")
     .then(restaurantes=>{
         db.query("select * from Usertable where type ='normal'")
             .then(usuarios=>{
