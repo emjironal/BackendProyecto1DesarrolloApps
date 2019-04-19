@@ -2,34 +2,58 @@ extends layout
 
 block content
     h1 Administrador
-    h2 Manejo restaurantes
-    div(style="overflow-y: scroll; height:200px;")
-        table(style="width:100%")
-            thead
-            tr
-                th IdRestaurant
-                th Restaurant
-                th LatitudePos
-                th LongitudePos
-                th Score
-                th FoodType
-                th Open
-                th Close
-                th Price
-                th Distrito
-            tbody
-            each restaurant in restaurants
+    form(action="/administrador", method="post")
+        h2 Manejo restaurantes
+        div(style="overflow-y: scroll; height:200px;", name="restaurantes")
+            table(style="width:100%", name="restaurantesTable")
+                thead
                 tr
-                    td #{restaurant.idrestaurant}
-                    td #{restaurant.name}
-                    td #{restaurant.latitudepos}
-                    td #{restaurant.longitudepos}
-                    td null
-                    td #{restaurant.foodtype}
-                    td #{restaurant.open}
-                    td #{restaurant.close}
-                    td #{restaurant.price}
-                    td null
+                    th Id
+                    th Restaurant
+                    th LatitudePos
+                    th LongitudePos
+                    th Score
+                    th FoodType
+                    th Open
+                    th Close
+                    th Price
+                    th Distrito
+                tbody
+                each restaurant, index in restaurants
+                    tr
+                        td #{restaurant.idrestaurant}
+                        td
+                            div
+                                input(type="text", name="name", value="#{restaurant.name}", size="10px")
+                        td
+                            div
+                                input(type="text", name="latitudepos", value="#{restaurant.latitudepos}", size="10px")
+                        td
+                            div
+                                input(type="text", name="longitudepos", value="#{restaurant.longitudepos}", size="10px")
+                        td null
+                        td
+                            div
+                                input(type="text", name="foodtype", value="#{restaurant.foodtype}", size="10px")
+                        td
+                            div
+                                input(type="text", name="open", value="#{restaurant.open}", size="10px")
+                        td
+                            div
+                                input(type="text", name="close", value="#{restaurant.close}", size="10px")
+                        td
+                            div
+                                input(type="text", name="price", value="#{restaurant.price}", size="10px")
+                        td
+                            div
+                                input(type="text", name="distrito", value="null", size="10px")
+                        td
+                            div
+                                input(type="submit", formaction="/administrador/modificar/#{index}/#{restaurant.idrestaurant}", value="M")
+                        td
+                            div
+                                input(type="submit", formaction="/administrador/eliminar/#{restaurant.idrestaurant}", value="X")
+        input(type="submit", value="Insertar restaurante", formaction="/administrador/insertar")
     h2 Vista usuarios
     div(style="overflow-y: scroll; height:200px;")
         table(style="width:100%")
