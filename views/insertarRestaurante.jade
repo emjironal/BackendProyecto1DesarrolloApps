@@ -1,0 +1,53 @@
+extends layout
+block content
+    h1 Insertar restaurante
+    br
+    form(action="/insertarRestaurante/insertar", method="post")
+        table
+            tr
+                td Name
+                td
+                    div
+                        input(type="text", name="name", placeholder="name")
+            tr
+                td Latitudepos
+                td
+                    div
+                        input(type="number", step="any", name="latitudepos", placeholder="latitudepos")
+            tr
+                td Longitudepos
+                td
+                    div
+                        input(type="number", step="any", name="longitudepos", placeholder="longitudepos")
+            tr
+                td Foodtype
+                td
+                    div
+                        input(type="text", name="foodtype", placeholder="foodtype")
+            tr
+                td Open
+                td
+                    div
+                        input(type="time", name="open", placeholder="open")
+            tr
+                td Close
+                td
+                    div
+                        input(type="time", name="close", placeholder="close")
+            tr
+                td Price
+                td
+                    div
+                        input(type="text", name="price", placeholder="price")
+            tr
+                td Distrito
+                td
+                    div
+                        input(type="number", name="distrito", placeholder="distrito")
+            tr
+                td
+                    div
+                        input(type="submit", value="Insertar")
+                td
+                    div
+                        input(type="submit", value="Cancelar", formaction="/administrador", formmethod="get")

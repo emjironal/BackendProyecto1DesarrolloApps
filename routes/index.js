@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var bluebird = require('bluebird');
 var db = require('./basedatos').db;
 
 
@@ -16,7 +15,7 @@ router.post('/login', function(req, res, next)
   var password = req.body.txtPassword;
   var query = "select * from usertable where type = 'administrator' and " +
                   "username = '" + username + "' and password = '" + password +"'";
-  db.any(query)
+  db.query(query)
   .then(result =>
     {
       if(result.length < 1)
