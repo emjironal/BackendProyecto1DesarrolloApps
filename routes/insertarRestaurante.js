@@ -17,8 +17,7 @@ router.post("/insertar", function(req, res, next)
     var close = req.body.close;
     var price = req.body.price;
     var codigodistrito = req.body.distrito;
-    var query = "insert into Restaurant (name, latitudepos, longitudepos, foodtype, open, close, price, codigodistrito) " +
-    "values('" + name + "'," + latitudepos + "," + longitudepos + ",'" + foodtype +
+    var query = "select insertarRestaurante('" + name + "'," + latitudepos + "," + longitudepos + ",'" + foodtype +
     "','" + open + ":00','" + close + ":00','" + price + "'," + codigodistrito + ")";
     db.query(query)
     .then(()=>{
