@@ -36,7 +36,7 @@ router.post("/modificar/:index/:id", function(req, res, next)
     var codigodistrito = req.body.distrito[req.params.index];
     db.query("update Restaurant set name = '" + name + "', latitudepos = " + latitudepos + ", " +
         "longitudepos = " + longitudepos + ", foodtype = '" + foodtype + "', open = '" + open + "', close = '" + close + "', " +
-        "price = '" + price + "' "+//, codigodistrito = '" + codigodistrito + "' " +
+        "price = '" + price + "', codigodistrito = '" + codigodistrito + "' " +
         "where idrestaurant = " + req.params.id)
     .then(()=>{
         res.redirect('/administrador');

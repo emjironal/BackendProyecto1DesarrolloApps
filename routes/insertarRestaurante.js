@@ -26,7 +26,7 @@ router.post("/insertar", function(req, res, next)
     .catch(err=>{
         console.log("Error: ", err);
         res.redirect("/administrador");
-    })
+    });
 });
 
 module.exports = router;
