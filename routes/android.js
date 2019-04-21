@@ -203,7 +203,7 @@ router.post("/comentar", function(req, res, next)
 router.post("/getComentarios", function(req, res, next)
 {
 	var idrestaurant = req.body.idrestaurant;
-	var query = "select username, content from Comment c inner join Usertable u on (c.iduser = u.iduser) where idrestaurant = '"+idrestaurant+"'";
+	var query = "select username, content, datecreated, timecreated from Comment c inner join Usertable u on (c.iduser = u.iduser) where idrestaurant = '"+idrestaurant+"'";
 	db.query(query)
 	.then(comments=>
 	{
