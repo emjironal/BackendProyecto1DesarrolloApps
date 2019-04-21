@@ -84,7 +84,7 @@ router.get("/getRestaurantes", function(req, res, next)
  */
 router.post("/eliminarRestaurante", function(req, res, next)
 {
-	db.query("delete from Restaurant where idrestaurant = " + req.body.idrestaurant)
+	db.query("select eliminarRestaurante(" + req.body.idrestaurant + ")")
     .then(()=>
     {
         res.send({result: true});
@@ -160,6 +160,25 @@ router.post("/insertarRestaurante", function(req, res, next)
 //Usuarios
 /**
  * insertarUsuario
+ * Recibe: {username: <valor string>, password: <valor string>, email: <valor email>}
+ * Devuelve: {result: <valor boolean>}
  */
+router.post("/insertarUsuario", function(req, res, next)
+{
+	var username = req.body.username;
+	var password = req.body.password;
+	var email = req.body.email;
+	var query = "insert into Usertable (username, password, type, email) values ('" + username + "', '" + password + "', 'normal', '" + email + "')";
+	db.query(query)
+	.then(()=>
+	{
+		res.send({result: true});
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
+});
 
 module.exports = router;
