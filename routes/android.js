@@ -111,7 +111,7 @@ router.post("/modificarRestaurante", function(req, res, next)
     var open = req.body.open;
     var close = req.body.close;
     var price = req.body.price;
-    var codigodistrito = req.body.distrito;
+    var codigodistrito = req.body.codigodistrito;
     var query = "update Restaurant set name = '" + name + "', latitudepos = " + latitudepos + ", " +
         "longitudepos = " + longitudepos + ", foodtype = '" + foodtype + "', open = '" + open + "', close = '" + close + "', " +
         "price = '" + price + "', codigodistrito = '" + codigodistrito + "' " +
@@ -123,7 +123,7 @@ router.post("/modificarRestaurante", function(req, res, next)
     })
     .catch(err=>
     {
-        console.log("Error: ", err);
+        console.log("Error: ", query);
         res.send({result: false});
     });
 });
@@ -142,9 +142,9 @@ router.post("/insertarRestaurante", function(req, res, next)
     var open = req.body.open;
     var close = req.body.close;
     var price = req.body.price;
-    var codigodistrito = req.body.distrito;
+    var codigodistrito = req.body.codigodistrito;
     var query = "select insertarRestaurante('" + name + "'," + latitudepos + "," + longitudepos + ",'" + foodtype +
-    "','" + open + ":00','" + close + ":00','" + price + "'," + codigodistrito + ")";
+    "','" + open + "','" + close + "','" + price + "'," + codigodistrito + ")";
     db.query(query)
     .then(()=>
     {
@@ -178,6 +178,41 @@ router.post("/insertarUsuario", function(req, res, next)
     {
         console.log("Error: ", err);
         res.send({result: false});
+    });
+});
+
+//Comentarios
+router.post("/comentar", function(req, res, next)
+{
+	var content = req.body.content;
+	var idrestaurant = req.body.idrestaurant;
+	var iduser = req.body.iduser;
+	var query = "insert into Comment (content, dateCreated, timeCreated, idRestaurant, idUser) values ('"+content+"', (select now()::date), (select now()::time), '"+idrestaurant+"', '"+iduser+"')";
+	db.query(query)
+	.then(()=>
+	{
+		res.send({result: true});
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
+});
+
+router.post("/getComentarios", function(req, res, next)
+{
+	var idrestaurant = req.body.idrestaurant;
+	var query = "select username, content from Comment c inner join Usertable u on (c.iduser = u.iduser) where idrestaurant = '"+idrestaurant+"'";
+	db.query(query)
+	.then(comments=>
+	{
+		res.send(comments);
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send("error");
     });
 });
 
