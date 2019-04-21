@@ -48,7 +48,7 @@ router.post("/modificar/:index/:id", function(req, res, next)
 });
 router.post("/eliminar/:id", function(req, res, next)
 {
-    db.query("delete from Restaurant where idrestaurant = " + req.params.id)
+    db.query("select eliminarRestaurante(" + req.params.id + ")")
         .then(()=>{
             res.redirect('/administrador');
         })
