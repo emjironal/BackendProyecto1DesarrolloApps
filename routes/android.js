@@ -182,6 +182,11 @@ router.post("/insertarUsuario", function(req, res, next)
 });
 
 //Comentarios
+/**
+ * Crea un comentario a un restaurante
+ * Recibe: {"content": <valor string>, "idrestaurant": <valor int>, "iduser": <valor int>}
+ * Devuelve: {result: <valor boolean>}
+ */
 router.post("/comentar", function(req, res, next)
 {
 	var content = req.body.content;
@@ -200,6 +205,11 @@ router.post("/comentar", function(req, res, next)
     });
 });
 
+/**
+ * Obtiene los comentarios de un restaurante
+ * Recibe: {"idrestaurant": <valor int>}
+ * Devuelve: {"username": <valor string>, "content": <valor string>, "datecreated": <valor time>, "timecreated": <valor time>}
+ */
 router.post("/getComentarios", function(req, res, next)
 {
 	var idrestaurant = req.body.idrestaurant;
@@ -208,6 +218,50 @@ router.post("/getComentarios", function(req, res, next)
 	.then(comments=>
 	{
 		res.send(comments);
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send("error");
+    });
+});
+
+//Imagenes
+/**
+ * Agrega una imagen a un restaurante
+ * Recibe: {"idrestaurant": <valor int>, "picture": <valor string>}
+ * Devuelve: {result: <valor boolean>}
+ */
+router.post("/agregarImagen", function(req, res, next)
+{
+	var idrestaurant = req.body.idrestaurant;
+	var picture = req.body.picture;
+	var query = "insert into Picture (idrestaurant, picture) values ("+idrestaurant+", '"+picture+"')";
+    db.query(query)
+    .then(()=>
+	{
+		res.send({result: true});
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
+});
+
+/**
+ * Obtiene las imagen de un restaurante
+ * Recibe: {"idrestaurant": <valor int>}
+ * Devuelve: {"idrestaurant": <valor int>, "picture": <valor string>}
+ */
+router.post("/getImagenes", function(req, res, next)
+{
+	var idrestaurant = req.body.idrestaurant;
+	var query = "select idrestaurant, picture from Picture where idrestaurant = "+idrestaurant;
+    db.query(query)
+    .then(pictures=>
+	{
+		res.send(pictures);
 	})
 	.catch(err=>
     {
