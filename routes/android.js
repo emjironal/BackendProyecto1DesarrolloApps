@@ -5,22 +5,22 @@ var db = require('./basedatos').db;
 //Login
 /**
  * login
- * Recibe: {username: <valor string>, password: <valor string>}
- * Devuelve: {result: <valor boolean>}
+ * @param {username: <string>, password: <string>}
+ * @returns {iduser: <int>, username: <string>, password: <string>, email: <string>}
  */
 router.post("/login", function(req, res, next)
 {
 	console.log("Solicitud de login", req.body);
 	db.query("select * from usertable where username = '"+req.body.username+"' and password = '"+req.body.password+"' and type = 'normal'")
-	.then(result=>
+	.then(user=>
 	{
-		if(result.length < 1)
+		if(user.length < 1)
 		{
-			res.send({result: false});
+			res.send(user);
 		}
 		else
 		{
-			res.send({result: true});
+			res.send(user);
 		}
 	})
 	.catch(err=>
@@ -30,11 +30,11 @@ router.post("/login", function(req, res, next)
 	});
 });
 
-//Restaurantes
+//CRUD Restaurantes
 /**
  * getRestaurante
- * Recibe: {idrestaurant: <valor int>}
- * Devuelve: {idrestaurant: <valor int>, name: <valor string>, latitudepos: <valor double>, longitudepos: <valor double>, realscore: <valor double>, foodtype: <valor string>, open: <valor string>, close: <valor string>, price: <valor string>, codigodistrito: <valor int>}
+ * @param {idrestaurant: <int>}
+ * @returns {idrestaurant: <int>, name: <string>, latitudepos: <double>, longitudepos: <double>, realscore: <double>, foodtype: <string>, open: <string>, close: <string>, price: <string>, codigodistrito: <int>}
  */
 router.post("/getRestaurante", function(req, res, next)
 {
@@ -57,8 +57,8 @@ router.post("/getRestaurante", function(req, res, next)
 
 /**
  * getRestaurantes
- * Recibe: {idrestaurant: <valor int>}
- * Devuelve: [{idrestaurant: <valor int>, name: <valor string>, latitudepos: <valor double>, longitudepos: <valor double>, realscore: <valor double>, foodtype: <valor string>, open: <valor string>, close: <valor string>, price: <valor string>, codigodistrito: <valor int>}]
+ * @param {idrestaurant: <int>}
+ * @returns {idrestaurant: <int>, name: <string>, latitudepos: <double>, longitudepos: <double>, realscore: <double>, foodtype: <string>, open: <string>, close: <string>, price: <string>, codigodistrito: <int>}
  */
 router.get("/getRestaurantes", function(req, res, next)
 {
@@ -79,8 +79,8 @@ router.get("/getRestaurantes", function(req, res, next)
 
 /**
  * eliminarRestaurante
- * Recibe: {idrestaurant: <valor int>}
- * Devuelve: {result: <valor boolean>}
+ * @param {idrestaurant: <int>}
+ * @returns {result: <boolean>}
  */
 router.post("/eliminarRestaurante", function(req, res, next)
 {
@@ -98,8 +98,8 @@ router.post("/eliminarRestaurante", function(req, res, next)
 
 /**
  * modificarRestaurante
- * Recibe: {idrestaurant: <valor int>, name: <valor string>, latitudepos: <valor double>, longitudepos: <valor double>, foodtype: <valor string>, open: <valor string formato hh:mm:ss>, close: <valor string formato hh:mm:ss>, price: <valor string>, codigodistrito: <valor int>}
- * Devuelve: {result: <valor boolean>}
+ * @param {idrestaurant: <int>, name: <string>, latitudepos: <double>, longitudepos: <double>, foodtype: <string>, open: <string formato hh:mm:ss>, close: <string formato hh:mm:ss>, price: <string>, codigodistrito: <int>}
+ * @returns {result: <boolean>}
  */
 router.post("/modificarRestaurante", function(req, res, next)
 {
@@ -130,8 +130,8 @@ router.post("/modificarRestaurante", function(req, res, next)
 
 /**
  * insertarRestaurante
- * Recibe: {name: <valor string>, latitudepos: <valor double>, longitudepos: <valor double>, foodtype: <valor string>, open: <valor string formato hh:mm:ss>, close: <valor string formato hh:mm:ss>, price: <valor string>, codigodistrito: <valor int>}
- * Devuelve: {result: <valor boolean>}
+ * @param {name: <string>, latitudepos: <double>, longitudepos: <double>, foodtype: <string>, open: <string formato hh:mm:ss>, close: <string formato hh:mm:ss>, price: <string>, codigodistrito: <int>}
+ * @returns {result: <boolean>}
  */
 router.post("/insertarRestaurante", function(req, res, next)
 {
@@ -160,8 +160,8 @@ router.post("/insertarRestaurante", function(req, res, next)
 //Usuarios
 /**
  * insertarUsuario
- * Recibe: {username: <valor string>, password: <valor string>, email: <valor email>}
- * Devuelve: {result: <valor boolean>}
+ * @param {username: <string>, password: <string>, email: <email>}
+ * @returns {result: <boolean>}
  */
 router.post("/insertarUsuario", function(req, res, next)
 {
@@ -184,8 +184,8 @@ router.post("/insertarUsuario", function(req, res, next)
 //Comentarios
 /**
  * Crea un comentario a un restaurante
- * Recibe: {"content": <valor string>, "idrestaurant": <valor int>, "iduser": <valor int>}
- * Devuelve: {result: <valor boolean>}
+ * @param {"content": <string>, "idrestaurant": <int>, "iduser": <int>}
+ * @returns {result: <boolean>}
  */
 router.post("/comentar", function(req, res, next)
 {
@@ -207,8 +207,8 @@ router.post("/comentar", function(req, res, next)
 
 /**
  * Obtiene los comentarios de un restaurante
- * Recibe: {"idrestaurant": <valor int>}
- * Devuelve: {"username": <valor string>, "content": <valor string>, "datecreated": <valor time>, "timecreated": <valor time>}
+ * @param {"idrestaurant": <int>}
+ * @returns {"username": <string>, "content": <string>, "datecreated": <time>, "timecreated": <time>}
  */
 router.post("/getComentarios", function(req, res, next)
 {
@@ -228,15 +228,26 @@ router.post("/getComentarios", function(req, res, next)
 
 //Imagenes
 /**
- * Agrega una imagen a un restaurante
- * Recibe: {"idrestaurant": <valor int>, "picture": <valor string>}
- * Devuelve: {result: <valor boolean>}
+ * Agrega varias imagenes a un restaurante
+ * @param {"idrestaurant": <int>, "pictures": [<string>]}
+ * @returns {result: <boolean>}
  */
-router.post("/agregarImagen", function(req, res, next)
+router.post("/agregarImagenes", function(req, res, next)
 {
-	var idrestaurant = req.body.idrestaurant;
-	var picture = req.body.picture;
-	var query = "insert into Picture (idrestaurant, picture) values ("+idrestaurant+", '"+picture+"')";
+    var idrestaurant = req.body.idrestaurant;
+    var pictures = req.body.pictures;
+    var query = "insert into Picture (idrestaurant, picture) values "
+    for(var i = 0; i < pictures.length; i++)
+    {
+        if(i == pictures.length - 1)
+        {
+            query += "("+idrestaurant+", '"+pictures[i]+"')";
+        }
+        else
+        {
+            query += "("+idrestaurant+", '"+pictures[i]+"'),";
+        }
+    }
     db.query(query)
     .then(()=>
 	{
@@ -251,8 +262,8 @@ router.post("/agregarImagen", function(req, res, next)
 
 /**
  * Obtiene las imagen de un restaurante
- * Recibe: {"idrestaurant": <valor int>}
- * Devuelve: {"idrestaurant": <valor int>, "picture": <valor string>}
+ * @param {"idrestaurant": <int>}
+ * @returns {"idrestaurant": <int>, "picture": <string>}
  */
 router.post("/getImagenes", function(req, res, next)
 {
@@ -262,6 +273,75 @@ router.post("/getImagenes", function(req, res, next)
     .then(pictures=>
 	{
 		res.send(pictures);
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send("error");
+    });
+});
+
+//Calificaciones
+/**
+ * Califica un restaurante
+ * @param {"idrestaurant": <int>, "score": <double 0..5>, "iduser": <int>}
+ * @returns {"result": <boolean>}
+ */
+router.post("/calificarResturante", function(req, res, next)
+{
+    var idrestaurant = req.body.idrestaurant;
+    var score = req.body.score;
+    var iduser = req.body.iduser;
+    var query = "select calificarRestaurante(" + idrestaurant + ", "+ score + ", "+ iduser + ")";
+    db.query(query)
+    .then(()=>
+	{
+		res.send({result: true});
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
+});
+
+/**
+ * Obtiene las calificaciones de un restaurante
+ * @param {"idrestaurant": <int>, "iduser": <int>}
+ * @returns {"score": <double>}
+ */
+router.post("/getCalificacionUser", function(req, res, next)
+{
+    var idrestaurant = req.body.idrestaurant;
+    var iduser = req.body.iduser;
+    var query = "select l.score from Score s inner join LineScore l on (s.idscore = l.idscore) where s.idrestaurant = "+idrestaurant+" and l.iduser = " + iduser;
+    db.query(query)
+    .then(calificacion=>
+	{
+		res.send(calificacion);
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send("error");
+    });
+});
+
+/**
+ * Obtiene las calificaciones de un restaurante
+ * @param {"idrestaurant": <int>}
+ * @returns {"username": <string>, "score": <double>}
+ */
+router.post("/getCalificacionRestaurante", function(req, res, next)
+{
+    var idrestaurant = req.body.idrestaurant;
+    var iduser = req.body.iduser;
+    var query = "select u.username, l.score from Score s inner join LineScore l on (s.idscore = l.idscore) "+
+        "inner join Usertable u on(u.iduser = l.iduser) where s.idrestaurant = "+idrestaurant;
+    db.query(query)
+    .then(calificacion=>
+	{
+		res.send(calificacion);
 	})
 	.catch(err=>
     {
