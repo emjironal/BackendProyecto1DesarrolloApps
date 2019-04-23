@@ -189,7 +189,7 @@ router.post("/recuperarContrasena", function(req, res, next)
 {
     var email = req.body.email;
     var query = "";
-    var sendEmail = require('email').sendEmail;
+    var sendEmail = require('./email').sendEmail;
     sendEmail(req, res);
 });
 
