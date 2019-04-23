@@ -57,7 +57,6 @@ router.post("/getRestaurante", function(req, res, next)
 
 /**
  * getRestaurantes
- * @param {idrestaurant: <int>}
  * @returns {idrestaurant: <int>, name: <string>, latitudepos: <double>, longitudepos: <double>, realscore: <double>, foodtype: <string>, open: <string>, close: <string>, price: <string>, codigodistrito: <int>}
  */
 router.get("/getRestaurantes", function(req, res, next)
@@ -179,6 +178,19 @@ router.post("/insertarUsuario", function(req, res, next)
         console.log("Error: ", err);
         res.send({result: false});
     });
+});
+
+/**
+ * Cambia la contraseña del usuario
+ * @param {"email": <string}
+ * @returns {"result": <boolean>}
+ */
+router.post("/recuperarContrasena", function(req, res, next)
+{
+    var email = req.body.email;
+    var query = "";
+    var sendEmail = require('email').sendEmail;
+    sendEmail(req, res);
 });
 
 //Comentarios
