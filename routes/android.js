@@ -5,13 +5,13 @@ var db = require('./basedatos').db;
 //Login
 /**
  * login
- * @param {username: <string>, password: <string>}
+ * @param {email: <string>, password: <string>}
  * @returns {iduser: <int>, username: <string>, password: <string>, email: <string>}
  */
 router.post("/login", function(req, res, next)
 {
 	console.log("Solicitud de login", req.body);
-	db.query("select * from usertable where username = '"+req.body.username+"' and password = '"+req.body.password+"' and type = 'normal'")
+	db.query("select * from usertable where email = '"+req.body.email+"' and password = '"+req.body.password+"' and type = 'normal'")
 	.then(user=>
 	{
 		if(user.length < 1)
@@ -190,6 +190,12 @@ router.post("/recuperarContrasena", function(req, res, next)
     var email = req.body.email;
     var query = "";
     var sendEmail = require('./email').sendEmail;
+    var mailOptions = {
+        from: 'Appetyte',
+        to: email,
+        subject: 'Recuperar contraseña',
+        text: 'Contenido del email'
+    };
     sendEmail(req, res);
 });
 

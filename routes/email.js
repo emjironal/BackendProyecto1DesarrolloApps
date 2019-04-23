@@ -4,7 +4,7 @@ var email = "appetyte1234@gmail.com";
 var password = "021346578";
 
 // email sender function
-exports.sendEmail = function(req, res){
+exports.sendEmail = function(req, res, mailOptions){
 // Definimos el transporter
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -13,13 +13,14 @@ exports.sendEmail = function(req, res){
             pass: password
         }
     });
-    // Definimos el email
+/*    // Definimos el email
     var mailOptions = {
         from: 'Remitente',
         to: 'emjironal@gmail.com',
         subject: 'Prueba',
         text: 'Contenido del email'
-    };
+    };https://medium.com/@uesteibar/env%C3%ADa-emails-desde-node-js-con-nodemailer-178cacf5cf6b
+*/
     // Enviamos el email
     transporter.sendMail(mailOptions, function(error, info){
         if (error){
