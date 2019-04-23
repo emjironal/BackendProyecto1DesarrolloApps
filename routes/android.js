@@ -350,4 +350,23 @@ router.post("/getCalificacionRestaurante", function(req, res, next)
     });
 });
 
+/**
+ * Obtiene los tipos de comida existentes
+ * @returns {"foodtype": <string>}
+ */
+router.get("/getAllFoodtypes", function(req, res, next)
+{
+    var query = "select distinct(foodtype) from Restaurant";
+    db.query(query)
+    .then(foodtypes=>
+    {
+        res.send(foodtypes);
+    })
+    .catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send("error");
+    });
+});
+
 module.exports = router;
