@@ -356,7 +356,7 @@ router.post("/getCalificacionRestaurante", function(req, res, next)
  */
 router.get("/getAllFoodtypes", function(req, res, next)
 {
-    var query = "select distinct(upper(foodtype)) from Restaurant";
+    var query = "select distinct(upper(foodtype)) as foodtype from Restaurant";
     db.query(query)
     .then(foodtypes=>
     {
