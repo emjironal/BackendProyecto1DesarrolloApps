@@ -304,17 +304,24 @@ router.post("/agregarImagenes", function(req, res, next)
 {
     var idrestaurant = req.body.idrestaurant;
     var pictures = req.body.pictures;
-    var query = "insert into Picture (idrestaurant, picture) values "
-    for(var i = 0; i < pictures.length; i++)
+    var query = "insert into Picture (idrestaurant, picture) values ";
+    if(Array.isArray(pictures))
     {
-        if(i == pictures.length - 1)
+        for(var i = 0; i < pictures.length; i++)
         {
-            query += "("+idrestaurant+", '"+pictures[i]+"')";
+            if(i == pictures.length - 1)
+            {
+                query += "("+idrestaurant+", '"+pictures[i]+"')";
+            }
+            else
+            {
+                query += "("+idrestaurant+", '"+pictures[i]+"'),";
+            }
         }
-        else
-        {
-            query += "("+idrestaurant+", '"+pictures[i]+"'),";
-        }
+    }
+    else
+    {
+        query += "("+idrestaurant+", '"+pictures+"')";
     }
     db.query(query)
     .then(()=>
