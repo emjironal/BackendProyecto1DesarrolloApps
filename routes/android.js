@@ -182,21 +182,71 @@ router.post("/insertarUsuario", function(req, res, next)
 
 /**
  * Cambia la contraseña del usuario
- * @param {"email": <string}
+ * @param {"email": <string>}
  * @returns {"result": <boolean>}
  */
 router.post("/recuperarContrasena", function(req, res, next)
 {
     var email = req.body.email;
-    var query = "";
     var sendEmail = require('./email').sendEmail;
+    var codigo = Math.floor(Math.random() * 99999) + 10000;
     var mailOptions = {
         from: 'Appetyte',
         to: email,
         subject: 'Recuperar contraseña',
-        text: 'Contenido del email'
+        text: 'Su código es: ' + codigo
     };
-    sendEmail(req, res);
+    sendEmail(req, res, mailOptions);
+    var query = "update usertable set password = '"+codigo+"' where email = '"+email+"'";
+    db.query(query)
+    .then(()=>
+	{
+		res.send({result: true});
+	})
+	.catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
+});
+
+/**
+ * Cambia la contraseña del usuario
+ * @param {"email": <string>, "password": <string>, "codigo": <int>}
+ * @returns {"result": <boolean>}
+ */
+router.post("/cambiarContrasena", function(req, res, next)
+{
+    var email = req.body.email;
+    var password = req.body.password;
+    var codigo = req.body.codigo;
+    db.query("select * from usertable where email = '"+email+"' and password = '"+codigo+"'")
+    .then(user=>
+    {
+        if(user.length == 0)
+        {
+            res.send({result: false});
+        }
+        else
+        {
+            var query = "update usertable set password = '"+password+"' where email = '"+email+"' and password = '"+codigo+"'";
+            db.query(query)
+            .then(()=>
+            {
+                res.send({result: true});
+            })
+            .catch(err=>
+            {
+                console.log("Error: ", err);
+                res.send({result: false});
+            });
+        }
+    })
+    .catch(err=>
+    {
+        console.log("Error: ", err);
+        res.send({result: false});
+    });
 });
 
 //Comentarios
