@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('./basedatos').db;
+var PuntoGeografico = require('./PuntoGeografico');
 
 //Login
 /**
@@ -38,15 +39,80 @@ router.post("/login", function(req, res, next)
  */
 router.post("/getRestaurante", function(req, res, next)
 {
-	console.log(req.body);
 	var query = "select r.idrestaurant, r.name, r.latitudepos, r.longitudepos, s.realscore, r.foodtype, r.open, r.close, r.price, r.codigodistrito " +
 	"from Restaurant r inner join Score s on (r.idrestaurant = s.idrestaurant) " +
-	"where r.idrestaurant = '" + req.body.idrestaurant + "' " +
-    "order by r.idrestaurant";
+    "where r.idrestaurant = '" + req.body.idrestaurant + "' ";
+    query += " order by r.idrestaurant";
 	db.query(query)
     .then(restaurante=>
     {
+        var result = [];
+        
     	res.send(restaurante);
+    })
+    .catch(err=>
+    {
+    	console.log("Error: ", err);
+    	res.send("error");
+    });
+});
+
+/**
+ * buscarRestaurante
+ * @param {"name": <string>, "price": <string>, "score": <int>, "distance": <int>, "latitudepos": <double>, "longitudepos": <double>, "foodtype": <string>}
+ * @returns {idrestaurant: <int>, name: <string>, latitudepos: <double>, longitudepos: <double>, realscore: <double>, foodtype: <string>, open: <string>, close: <string>, price: <string>, codigodistrito: <int>}
+ */
+router.post("/buscarRestaurante", function(req, res, next)
+{
+    var name = req.body.name;
+    var price = req.body.price;
+    var distance = req.body.distance;
+    var latitudepos = req.body.latitudepos;
+    var longitudepos = req.body.longitudepos;
+    var foodtype = req.body.foodtype;
+    var score = req.body.score;
+	var query = "select r.idrestaurant, r.name, r.latitudepos, r.longitudepos, s.realscore, r.foodtype, r.open, r.close, r.price, r.codigodistrito " +
+	"from Restaurant r inner join Score s on (r.idrestaurant = s.idrestaurant) " +
+    "where r.idrestaurant = r.idrestaurant ";
+    if(name != undefined)
+    {
+        query += " and upper(r.name) like upper('%"+name+"%')";
+    }
+    if(price != undefined)
+    {
+        query += " and upper(r.price) like upper('"+price+"')";
+    }
+    if(foodtype != undefined)
+    {
+        query += " and upper(r.foodtype) like upper('"+foodtype+"')";
+    }
+    if(score != undefined)
+    {
+        query += " and s.realscore::int = "+score;
+    }
+    query += " order by r.idrestaurant";
+	db.query(query)
+    .then(restaurante=>
+    {
+        if(distance != undefined && latitudepos != undefined && longitudepos != undefined)
+        {
+            var result = [];
+            var puntoUser = new PuntoGeografico(latitudepos, longitudepos);
+            restaurante.forEach(element =>
+            {
+                var puntoRestaurante = new PuntoGeografico(element.latitudepos, element.longitudepos);
+                var distanciaCalculada = puntoUser.distancia(puntoRestaurante);
+                if(distanciaCalculada <= distance)
+                {
+                    result.push(element);
+                }
+            });
+            res.send(result);
+        }
+        else
+    	{
+            res.send(restaurante);
+        }
     })
     .catch(err=>
     {
