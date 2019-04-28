@@ -104,6 +104,8 @@ router.post("/buscarRestaurante", function(req, res, next)
                 var distanciaCalculada = puntoUser.distancia(puntoRestaurante);
                 if(distanciaCalculada <= distance)
                 {
+                    Object.defineProperty(element, "distance", {value: distanciaCalculada, writable:true,
+                        enumerable:true, configurable:true});
                     result.push(element);
                 }
             });
